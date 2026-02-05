@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:SystemOfTestingMobile.Converters"
+             x:Class="SystemOfTestingMobile.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <converters:AnswerBackgroundConverter x:Key="AnswerBackgroundConverter" />
+            <converters:AnswerBorderConverter x:Key="AnswerBorderConverter" />
+            <converters:AnswerTextConverter x:Key="AnswerTextConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+
+</Application>

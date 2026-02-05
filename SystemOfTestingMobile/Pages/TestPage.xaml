@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:SystemOfTestingMobile.ViewModels"
+             x:Class="SystemOfTestingMobile.Pages.TestPage"
+             Title="Прохождение теста">
+
+    <ContentPage.BindingContext>
+        <viewmodels:TestPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Заголовок и информация -->
+            <Frame CornerRadius="15" 
+                   BackgroundColor="#171717" 
+                   Padding="15">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{Binding Test.Title}" 
+                           FontSize="22" 
+                           FontAttributes="Bold"
+                           TextColor="#007AFF"/>
+
+                    <Grid ColumnDefinitions="*,*">
+                        <Label Grid.Column="0"
+                               Text="{Binding UserName, StringFormat='👤 Пользователь: {0}'}"
+                               FontSize="14"
+                               TextColor="White"/>
+                        <Label Grid.Column="1"
+                               Text="{Binding QuestionNumberText}"
+                               FontSize="14"
+                               TextColor="White"
+                               HorizontalOptions="End"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Текущий вопрос -->
+            <Frame CornerRadius="15" 
+                   BackgroundColor="#171717" 
+                   Padding="20"
+                   BorderColor="#E0E0E0"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="{Binding CurrentQuestion.Text}" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+
+                    <!-- Варианты ответов -->
+                    <VerticalStackLayout Spacing="10" 
+                                         BindableLayout.ItemsSource="{Binding CurrentQuestion.Answers}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Border Stroke="#E0E0E0" 
+                                        StrokeThickness="1" 
+                                        StrokeShape="RoundRectangle 10"
+                                        BackgroundColor="{Binding IsSelected, Converter={StaticResource AnswerBackgroundConverter}}"
+                                        Padding="0">
+                                    <Grid>
+                                        <RadioButton GroupName="Answers" 
+                                                     Content="{Binding Text}"
+                                                     IsChecked="{Binding IsSelected}"
+                                                     CheckedChanged="OnAnswerCheckedChanged"
+                                                     Margin="15">
+                                            <RadioButton.ControlTemplate>
+                                                <ControlTemplate>
+                                                    <Grid ColumnDefinitions="Auto,*" 
+                                                          RowDefinitions="Auto"
+                                                          Margin="0">
+                                                        <Ellipse x:Name="ellipse" 
+                                                                 Grid.Column="0"
+                                                                 Fill="Transparent"
+                                                                 Stroke="{Binding IsSelected, Converter={StaticResource AnswerBorderConverter}}"
+                                                                 StrokeThickness="2"
+                                                                 HeightRequest="24"
+                                                                 WidthRequest="24"
+                                                                 Margin="0,0,10,0"
+                                                                 VerticalOptions="Center"/>
+                                                        <ContentView Grid.Column="1"
+                                                                     Padding="0"
+                                                                     VerticalOptions="Center">
+                                                            <Label Text="{TemplateBinding Content}"
+                                                                   FontSize="16"
+                                                                   TextColor="#212121"
+                                                                   LineBreakMode="WordWrap"/>
+                                                        </ContentView>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </RadioButton.ControlTemplate>
+                                        </RadioButton>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Кнопки навигации -->
+            <Grid ColumnDefinitions="*" ColumnSpacing="15">
+
+                <Button Grid.Column="1"
+                        Text="Далее ▶"
+                        TextColor="White"
+                        FontSize="16"
+                        HeightRequest="50"
+                        CornerRadius="10"
+                        IsEnabled="{Binding IsAnswerSelected}"
+                        Clicked="OnNextButtonClicked"/>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
